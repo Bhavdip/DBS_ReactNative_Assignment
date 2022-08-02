@@ -2,7 +2,8 @@ import {
     FETCH_POST,
     REQ_RERENDER,
     SAVE_POST_DATA,
-    FAILED_TO_FETCH_POST
+    FAILED_TO_FETCH_POST,
+    SEARCH_IN_BODY
 } from './types';
 
 export function requestForReRender() {
@@ -20,7 +21,7 @@ export function fetchLatestPost() {
 
 export function savePostData(responseData) {
     const latestPostData =
-        responseData && responseData.length > 0 ? responseData : [];
+        responseData && responseData.length > 0 ? [...responseData] : [];
     return {
         type: SAVE_POST_DATA,
         payload: {
@@ -35,5 +36,12 @@ export function failedToFetchData(error) {
         payload: {
             error
         }
+    };
+}
+
+export function searchInBody(searchText) {
+    return {
+        type: SEARCH_IN_BODY,
+        searchText
     };
 }

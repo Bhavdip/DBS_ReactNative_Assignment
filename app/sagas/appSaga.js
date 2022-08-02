@@ -4,6 +4,8 @@ import { postData } from '../reudx/selectors';
 
 const TAG = '[AppSaga]';
 
+let originalPostDataset = [];
+
 const getRandomNumber = () => {
     const min = 1000000000;
     const max = 9000000000;
@@ -59,6 +61,54 @@ export function* refreshPostData() {
         let nwUpdatedPostData = appendRanNumAttribute(yield select(postData));
         yield put(savePostData(nwUpdatedPostData));
         console.log(TAG, 'Saved Updated Post Data Successfully');
+    } catch (error) {
+        console.log(TAG, error);
+    }
+}
+
+export function* searchInPostBody(action) {
+    try {
+        const argSearchText = action && action.searchText;
+        const searchPostDataSet = yield select(postData);
+        if (originalPostDataset && originalPostDataset.length === 0) {
+            console.log(
+                TAG,
+                'Search Characters in body' + JSON.stringify(action)
+            );
+            originalPostDataset = [...searchPostDataSet];
+        }
+        if (argSearchText && argSearchText.length > 0 && searchPostDataSet) {
+            const searchResultDataset = searchPostDataSet.filter(item => {
+                const searchChars = argSearchText.trim().toLowerCase();
+                const postBody = `${item.body.toLowerCase()}`;
+                const result = RegExp('\\b' + searchChars + '\\b').test(
+                    postBody
+                );
+                console.log(
+                    TAG,
+                    `extractChars: ${searchChars.length} ${searchChars}, ${result}`
+                );
+                return result;
+            });
+            console.log(
+                TAG,
+                `Result:: ${JSON.stringify(searchResultDataset)} | ${
+                    searchResultDataset && searchResultDataset.length
+                }`
+            );
+            if (searchResultDataset && searchResultDataset.length > 0) {
+                yield put(savePostData(searchResultDataset));
+            } else {
+                yield put(savePostData(originalPostDataset));
+            }
+        } else {
+            console.log(
+                TAG,
+                'Reset with original Post Data' + originalPostDataset.length
+            );
+            yield put(savePostData(originalPostDataset));
+
+        }
     } catch (error) {
         console.log(TAG, error);
     }

@@ -7,7 +7,7 @@ class SearchComponent extends Component {
         return (
             <View style={styles.contentContainer}>
                 <TextInput
-                    onChangeText={() => {}}
+                    onChangeText={this.props.onChangeText}
                     style={styles.inputTextStyle}
                     placeholder="Search a Text"
                 />

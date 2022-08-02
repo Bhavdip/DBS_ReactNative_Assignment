@@ -3,7 +3,11 @@ import { StyleSheet, View } from 'react-native';
 import SearchComponent from './components/SearchComponent';
 import PostsComponent from './components/PostsComponent';
 import GIFComponent from './components/GIFComponent';
-import { requestForReRender, fetchLatestPost } from './reudx/action';
+import {
+    requestForReRender,
+    fetchLatestPost,
+    searchInBody
+} from './reudx/action';
 import { connect } from 'react-redux';
 
 class DBSApplication extends Component {
@@ -12,7 +16,12 @@ class DBSApplication extends Component {
         return (
             <View style={styles.sectionContainer}>
                 <GIFComponent />
-                <SearchComponent requestForRefresh={requestForRefresh} />
+                <SearchComponent
+                    requestForRefresh={requestForRefresh}
+                    onChangeText={text => {
+                        this.props.searchInPostBody(text);
+                    }}
+                />
                 <PostsComponent
                     showLoading={showLoading}
                     latestPostData={latestPostData}
@@ -43,7 +52,8 @@ function mapStateToProps(globalState) {
 function mapDispatchToProps(dispatch) {
     return {
         requestForRefresh: () => dispatch(requestForReRender()),
-        fetchLatestPost: () => dispatch(fetchLatestPost())
+        fetchLatestPost: () => dispatch(fetchLatestPost()),
+        searchInPostBody: searchChars => dispatch(searchInBody(searchChars))
     };
 }
 
