@@ -2,11 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, View } from 'react-native';
 import PostsComponent from './components/PostsComponent';
 import GIFComponent from './components/GIFComponent';
-import {
-    requestForReRender,
-    fetchLatestPost,
-    searchInBody
-} from './reudx/action';
+import { requestForReRender, fetchLatestPost } from './reudx/action';
 import { connect } from 'react-redux';
 
 class DBSApplication extends Component {
@@ -18,6 +14,7 @@ class DBSApplication extends Component {
                 <PostsComponent
                     showLoading={showLoading}
                     latestPostData={latestPostData}
+                    requestForRefresh={() => this.props.requestForRefresh()}
                 />
             </View>
         );

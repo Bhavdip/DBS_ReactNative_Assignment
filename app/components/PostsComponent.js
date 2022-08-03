@@ -3,8 +3,8 @@ import { StyleSheet, Text, View } from 'react-native';
 import ListView from './List-view';
 import SearchComponent from './SearchComponent';
 
+// const TAG = '[PostsComponent]';
 const PostsComponent = props => {
-    const TAG = '[PostsComponent]==>';
     const [filterText, setFilterText] = useState('');
     const [filteredElements, setFilteredElements] = useState(
         props.latestPostData
@@ -15,17 +15,18 @@ const PostsComponent = props => {
         const searchResultDataset = latestPostData.filter(element => {
             const searchWord = filterText.trim().toLowerCase();
             const postBody = element.body.toLowerCase();
-            const result = RegExp('\\b' + searchWord + '\\b').test(postBody);
-            console.log(
-                TAG,
-                `extractChars: ${searchWord.length} ${searchWord}, ${result}`
-            );
-            return result;
+            return RegExp('\\b(.|\\s)' + searchWord).test(postBody);
+            // const result = RegExp('\\b(.|\\s)' + searchWord).test(postBody);
+            // console.log(
+            //     TAG,
+            //     `extractChars: ${searchWord.length} ${searchWord}, ${result}`
+            // );
+            // return result;
         });
         if (searchResultDataset && searchResultDataset.length > 0) {
             setFilteredElements(searchResultDataset);
         } else {
-            setFilteredElements(props.latestPostData);
+            setFilteredElements(latestPostData);
         }
     }, [latestPostData, filterText]);
 
@@ -48,7 +49,10 @@ const PostsComponent = props => {
 
     return (
         <View style={styles.contentContainer}>
-            <SearchComponent onChangeText={handleFilterTextChange} />
+            <SearchComponent
+                onChangeText={handleFilterTextChange}
+                requestForRefresh={props.requestForRefresh}
+            />
             <ListView
                 showLoading={props.showLoading}
                 data={filteredElements}
