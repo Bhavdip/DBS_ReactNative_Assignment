@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { StyleSheet, View } from 'react-native';
-import SearchComponent from './components/SearchComponent';
 import PostsComponent from './components/PostsComponent';
 import GIFComponent from './components/GIFComponent';
 import {
@@ -12,16 +11,10 @@ import { connect } from 'react-redux';
 
 class DBSApplication extends Component {
     render() {
-        const { requestForRefresh, showLoading, latestPostData } = this.props;
+        const { showLoading, latestPostData } = this.props;
         return (
             <View style={styles.sectionContainer}>
                 <GIFComponent />
-                <SearchComponent
-                    requestForRefresh={requestForRefresh}
-                    onChangeText={text => {
-                        this.props.searchInPostBody(text);
-                    }}
-                />
                 <PostsComponent
                     showLoading={showLoading}
                     latestPostData={latestPostData}
@@ -52,8 +45,7 @@ function mapStateToProps(globalState) {
 function mapDispatchToProps(dispatch) {
     return {
         requestForRefresh: () => dispatch(requestForReRender()),
-        fetchLatestPost: () => dispatch(fetchLatestPost()),
-        searchInPostBody: searchChars => dispatch(searchInBody(searchChars))
+        fetchLatestPost: () => dispatch(fetchLatestPost())
     };
 }
 

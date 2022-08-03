@@ -1,9 +1,35 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import ListView from './List-view';
+import SearchComponent from './SearchComponent';
 
-class PostsComponent extends Component {
-    renderPostBody = ({ item }) => {
+const PostsComponent = props => {
+    const TAG = '[PostsComponent]==>';
+    const [filterText, setFilterText] = useState('');
+    const [filteredElements, setFilteredElements] = useState(
+        props.latestPostData
+    );
+    const { latestPostData } = props;
+
+    useEffect(() => {
+        const searchResultDataset = latestPostData.filter(element => {
+            const searchWord = filterText.trim().toLowerCase();
+            const postBody = element.body.toLowerCase();
+            const result = RegExp('\\b' + searchWord + '\\b').test(postBody);
+            console.log(
+                TAG,
+                `extractChars: ${searchWord.length} ${searchWord}, ${result}`
+            );
+            return result;
+        });
+        if (searchResultDataset && searchResultDataset.length > 0) {
+            setFilteredElements(searchResultDataset);
+        } else {
+            setFilteredElements(props.latestPostData);
+        }
+    }, [latestPostData, filterText]);
+
+    const renderPostBody = ({ item }) => {
         const postContent = `${item.id}:${item.body}`;
         return (
             <View>
@@ -16,20 +42,21 @@ class PostsComponent extends Component {
             </View>
         );
     };
+    const handleFilterTextChange = text => {
+        setFilterText(text);
+    };
 
-    render() {
-        const { showLoading, latestPostData } = this.props;
-        return (
-            <View style={styles.contentContainer}>
-                <ListView
-                    showLoading={showLoading}
-                    data={latestPostData}
-                    renderItem={this.renderPostBody}
-                />
-            </View>
-        );
-    }
-}
+    return (
+        <View style={styles.contentContainer}>
+            <SearchComponent onChangeText={handleFilterTextChange} />
+            <ListView
+                showLoading={props.showLoading}
+                data={filteredElements}
+                renderItem={renderPostBody}
+            />
+        </View>
+    );
+};
 
 const styles = StyleSheet.create({
     contentContainer: {
@@ -40,5 +67,4 @@ const styles = StyleSheet.create({
         fontWeight: 'bold'
     }
 });
-
 export default PostsComponent;
