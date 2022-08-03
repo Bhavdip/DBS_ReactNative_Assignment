@@ -1,27 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext} from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import ListView from './List-view';
-import SearchComponent from './SearchComponent';
+import { AppContext } from '../context/ApplicationContext';
 
 // const TAG = '[PostsComponent]';
-const PostsComponent = props => {
-    const [filterText, setFilterText] = useState('');
-    const [filteredElements, setFilteredElements] = useState(
-        props.latestPostData
-    );
+export const PostsComponent = props => {
     const { latestPostData } = props;
+    const { filterText } = useContext(AppContext);
+    const [filteredElements, setFilteredElements] = useState(latestPostData);
 
     useEffect(() => {
         const searchResultDataset = latestPostData.filter(element => {
             const searchWord = filterText.trim().toLowerCase();
             const postBody = element.body.toLowerCase();
             return RegExp('\\b(.|\\s)' + searchWord).test(postBody);
-            // const result = RegExp('\\b(.|\\s)' + searchWord).test(postBody);
-            // console.log(
-            //     TAG,
-            //     `extractChars: ${searchWord.length} ${searchWord}, ${result}`
-            // );
-            // return result;
         });
         if (searchResultDataset && searchResultDataset.length > 0) {
             setFilteredElements(searchResultDataset);
@@ -43,16 +35,8 @@ const PostsComponent = props => {
             </View>
         );
     };
-    const handleFilterTextChange = text => {
-        setFilterText(text);
-    };
-
     return (
         <View style={styles.contentContainer}>
-            <SearchComponent
-                onChangeText={handleFilterTextChange}
-                requestForRefresh={props.requestForRefresh}
-            />
             <ListView
                 showLoading={props.showLoading}
                 data={filteredElements}
@@ -71,4 +55,3 @@ const styles = StyleSheet.create({
         fontWeight: 'bold'
     }
 });
-export default PostsComponent;

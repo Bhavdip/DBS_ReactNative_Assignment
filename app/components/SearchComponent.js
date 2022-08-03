@@ -1,14 +1,18 @@
-import React, { useRef } from 'react';
-import { StyleSheet, View, TextInput } from 'react-native';
+import React, { useRef, useContext } from 'react';
 import { Button } from './Button';
+import { StyleSheet, View, TextInput } from 'react-native';
+import { AppContext } from '../context/ApplicationContext';
 
 const SearchComponent = props => {
+    const { setFilterText } = useContext(AppContext);
     const textInputRef = useRef(null);
     return (
         <View style={styles.contentContainer}>
             <TextInput
                 ref={textInputRef}
-                onChangeText={props.onChangeText}
+                onChangeText={text => {
+                    setFilterText(text);
+                }}
                 style={styles.inputTextStyle}
                 autoCapitalize="none"
                 autoCorrect={false}
