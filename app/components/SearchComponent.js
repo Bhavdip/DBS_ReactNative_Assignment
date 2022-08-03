@@ -11,6 +11,7 @@ const SearchComponent = props => {
                 onChangeText={props.onChangeText}
                 style={styles.inputTextStyle}
                 autoCapitalize="none"
+                autoCorrect={false}
                 placeholderTextColor="rgba(212,211,212, 1)"
                 placeholder="Search a Text"
             />
@@ -28,11 +29,10 @@ const SearchComponent = props => {
 
 const styles = StyleSheet.create({
     contentContainer: {
-        marginTop: 8,
         paddingHorizontal: 8
     },
     renderButtonStyle: {
-        marginTop: 8
+        marginVertical: 12
     },
     inputTextStyle: { borderWidth: 1, padding: 12 }
 });
