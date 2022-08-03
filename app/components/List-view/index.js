@@ -1,16 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-    Text,
-    FlatList,
-    StyleSheet,
-    View,
-    ActivityIndicator
-} from 'react-native';
+import { FlatList, StyleSheet, View, ActivityIndicator } from 'react-native';
 
 const keyExtractor = (item, index) => index.toString();
 const ListView = props => {
-    const { showError, showLoading } = props;
+    const { showLoading } = props;
     if (showLoading) {
         return (
             <View style={styles.indicatorLayout}>
@@ -18,14 +12,6 @@ const ListView = props => {
             </View>
         );
     }
-    if (showError) {
-        return (
-            <View style={styles.indicatorLayout}>
-                <Text testID="TextError">{showError}</Text>
-            </View>
-        );
-    }
-
     return (
         <View style={[styles.listContainer, props.listContainerStyle]}>
             <FlatList

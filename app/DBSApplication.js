@@ -1,60 +1,32 @@
 import React, { Component } from 'react';
-import { StyleSheet, View } from 'react-native';
-import SearchComponent from './components/SearchComponent';
-import PostsComponent from './components/PostsComponent';
+import { StyleSheet, View, Platform } from 'react-native';
+import { PostsComponent } from './components/PostsComponent';
 import GIFComponent from './components/GIFComponent';
-import {
-    requestForReRender,
-    fetchLatestPost,
-    searchInBody
-} from './reudx/action';
-import { connect } from 'react-redux';
+import SearchComponent from './components/SearchComponent';
+import { AppReducerProvider } from './context/AppReducerContext';
+import AppContextProvider from './context/AppContextProvider';
 
 class DBSApplication extends Component {
     render() {
-        const { requestForRefresh, showLoading, latestPostData } = this.props;
         return (
-            <View style={styles.sectionContainer}>
-                <GIFComponent />
-                <SearchComponent
-                    requestForRefresh={requestForRefresh}
-                    onChangeText={text => {
-                        this.props.searchInPostBody(text);
-                    }}
-                />
-                <PostsComponent
-                    showLoading={showLoading}
-                    latestPostData={latestPostData}
-                />
-            </View>
+            <AppContextProvider>
+                <View style={styles.sectionContainer}>
+                    <GIFComponent />
+                    <AppReducerProvider>
+                        <SearchComponent />
+                        <PostsComponent />
+                    </AppReducerProvider>
+                </View>
+            </AppContextProvider>
         );
-    }
-
-    componentDidMount() {
-        this.props.fetchLatestPost();
     }
 }
 
 const styles = StyleSheet.create({
     sectionContainer: {
         flex: 1,
-        marginTop: 38
+        marginTop: Platform.OS === 'ios' ? 38 : 0
     }
 });
 
-function mapStateToProps(globalState) {
-    return {
-        showLoading: globalState.appReducer.isFetchingPost,
-        latestPostData: globalState.appReducer.postData
-    };
-}
-
-function mapDispatchToProps(dispatch) {
-    return {
-        requestForRefresh: () => dispatch(requestForReRender()),
-        fetchLatestPost: () => dispatch(fetchLatestPost()),
-        searchInPostBody: searchChars => dispatch(searchInBody(searchChars))
-    };
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(DBSApplication);
+export default DBSApplication;

@@ -28,7 +28,7 @@ const duplicateArrayMultipleTimes = (arr, repeats) => {
     return []
         .concat(...Array.from({ length: repeats }, () => arr))
         .map((element, index) => {
-            return { ...element, id: index };
+            return { ...element, id: index + 1 };
         });
 };
 
@@ -107,7 +107,6 @@ export function* searchInPostBody(action) {
                 'Reset with original Post Data' + originalPostDataset.length
             );
             yield put(savePostData(originalPostDataset));
-
         }
     } catch (error) {
         console.log(TAG, error);
