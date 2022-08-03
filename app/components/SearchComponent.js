@@ -1,12 +1,14 @@
 import React, { useRef, useContext } from 'react';
 import { Button } from './Button';
 import { StyleSheet, View, TextInput } from 'react-native';
-import { AppContext } from '../context/ApplicationContext';
+import { AppReducerContext } from '../context/AppReducerContext';
+import AppContext from '../context/AppContext';
 import { searchInPost } from '../reudx/action';
 
 const SearchComponent = props => {
     // access the state of post component
-    const { dispatch } = useContext(AppContext);
+    const { dispatch } = useContext(AppReducerContext);
+    const { onReRender } = useContext(AppContext);
     const textInputRef = useRef(null);
     return (
         <View style={styles.contentContainer}>
@@ -27,7 +29,7 @@ const SearchComponent = props => {
                 onButtonPress={() => {
                     textInputRef.current.clear();
                     dispatch(searchInPost(''));
-                    props.requestForRefresh();
+                    onReRender();
                 }}
             />
         </View>

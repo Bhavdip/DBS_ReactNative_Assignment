@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import ListView from './List-view';
-import { AppContext } from '../context/ApplicationContext';
+import { AppReducerContext } from '../context/AppReducerContext';
+import AppContext from '../context/AppContext';
 
-export const PostsComponent = props => {
-    const { latestPostData } = props;
-    const { state } = useContext(AppContext);
+export const PostsComponent = () => {
+    const { state } = useContext(AppReducerContext);
+    const { latestPostData, displayLoading } = useContext(AppContext);
     const [filteredElements, setFilteredElements] = useState(latestPostData);
 
     useEffect(() => {
@@ -37,7 +38,7 @@ export const PostsComponent = props => {
     return (
         <View style={styles.contentContainer}>
             <ListView
-                showLoading={props.showLoading}
+                showLoading={displayLoading}
                 data={filteredElements}
                 renderItem={renderPostBody}
             />
