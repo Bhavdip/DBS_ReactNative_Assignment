@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Platform } from 'react-native';
 import { PostsComponent } from './components/PostsComponent';
 import GIFComponent from './components/GIFComponent';
 import SearchComponent from './components/SearchComponent';
@@ -25,7 +25,7 @@ class DBSApplication extends Component {
 const styles = StyleSheet.create({
     sectionContainer: {
         flex: 1,
-        marginTop: 38
+        marginTop: Platform.OS === 'ios' ? 38 : 0
     }
 });
 
