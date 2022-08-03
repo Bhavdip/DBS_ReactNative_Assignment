@@ -1,17 +1,16 @@
-import React, { useState, useEffect, useContext} from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import ListView from './List-view';
 import { AppContext } from '../context/ApplicationContext';
 
-// const TAG = '[PostsComponent]';
 export const PostsComponent = props => {
     const { latestPostData } = props;
-    const { filterText } = useContext(AppContext);
+    const { state } = useContext(AppContext);
     const [filteredElements, setFilteredElements] = useState(latestPostData);
 
     useEffect(() => {
         const searchResultDataset = latestPostData.filter(element => {
-            const searchWord = filterText.trim().toLowerCase();
+            const searchWord = state.searchText.trim().toLowerCase();
             const postBody = element.body.toLowerCase();
             return RegExp('\\b(.|\\s)' + searchWord).test(postBody);
         });
@@ -20,7 +19,7 @@ export const PostsComponent = props => {
         } else {
             setFilteredElements(latestPostData);
         }
-    }, [latestPostData, filterText]);
+    }, [state.searchText, latestPostData]);
 
     const renderPostBody = ({ item }) => {
         const postContent = `${item.id}:${item.body}`;

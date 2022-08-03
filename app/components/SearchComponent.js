@@ -2,17 +2,18 @@ import React, { useRef, useContext } from 'react';
 import { Button } from './Button';
 import { StyleSheet, View, TextInput } from 'react-native';
 import { AppContext } from '../context/ApplicationContext';
+import { searchInPost } from '../reudx/action';
 
 const SearchComponent = props => {
     // access the state of post component
-    const { setFilterText } = useContext(AppContext);
+    const { dispatch } = useContext(AppContext);
     const textInputRef = useRef(null);
     return (
         <View style={styles.contentContainer}>
             <TextInput
                 ref={textInputRef}
                 onChangeText={text => {
-                    setFilterText(text);
+                    dispatch(searchInPost(text));
                 }}
                 style={styles.inputTextStyle}
                 autoCapitalize="none"
@@ -25,6 +26,7 @@ const SearchComponent = props => {
                 buttonStyle={styles.renderButtonStyle}
                 onButtonPress={() => {
                     textInputRef.current.clear();
+                    dispatch(searchInPost(''));
                     props.requestForRefresh();
                 }}
             />

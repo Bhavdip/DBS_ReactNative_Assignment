@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, { useReducer } from 'react';
+import { initialState, appReducer } from '../reudx/reducer';
 
 export const AppContext = React.createContext();
-export const AppContextProvider = ({ children }) => {
-    const [filterText, setFilterText] = useState('');
 
+export const AppContextProvider = ({ children }) => {
+    const [state, dispatch] = useReducer(appReducer, initialState);
     return (
-        <AppContext.Provider value={{ filterText, setFilterText }}>
+        <AppContext.Provider value={{ state, dispatch }}>
             {children}
         </AppContext.Provider>
     );

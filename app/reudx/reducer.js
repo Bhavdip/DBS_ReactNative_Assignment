@@ -3,20 +3,21 @@ import {
     FETCH_POST,
     REQ_RERENDER,
     FAILED_TO_FETCH_POST,
-    SAVE_POST_DATA
+    SAVE_POST_DATA,
+    SEARCH_IN_POST
 } from './types';
 
-const initialState = {
+export const initialState = {
     isFetchingPost: false,
     postData: [],
-    errorData: null
+    errorData: null,
+    searchText: ''
 };
 
 export const appReducer = createReducer(initialState, {
     [REQ_RERENDER](state) {
         return {
             ...state,
-            isFetchingPost: false,
             errorData: null
         };
     },
@@ -31,7 +32,7 @@ export const appReducer = createReducer(initialState, {
         return {
             ...state,
             isFetchingPost: false,
-            postData: [...action.payload.latestPostData]
+            postData: action.payload.latestPostData
         };
     },
     [FAILED_TO_FETCH_POST](state, action) {
@@ -39,6 +40,12 @@ export const appReducer = createReducer(initialState, {
             ...state,
             isFetchingPost: false,
             errorData: action.payload.error
+        };
+    },
+    [SEARCH_IN_POST](state, action) {
+        return {
+            ...state,
+            searchText: action.payload
         };
     }
 });
