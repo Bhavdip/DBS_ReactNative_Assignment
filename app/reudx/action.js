@@ -2,8 +2,7 @@ import {
     FETCH_POST,
     REQ_RERENDER,
     SAVE_POST_DATA,
-    FAILED_TO_FETCH_POST,
-    SEARCH_IN_BODY
+    FAILED_TO_FETCH_POST
 } from './types';
 
 export function requestForReRender() {
@@ -36,12 +35,5 @@ export function failedToFetchData(error) {
         payload: {
             error
         }
-    };
-}
-
-export function searchInBody(searchText) {
-    return {
-        type: SEARCH_IN_BODY,
-        searchText
     };
 }
