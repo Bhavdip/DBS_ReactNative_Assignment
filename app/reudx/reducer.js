@@ -16,7 +16,7 @@ export const appReducer = createReducer(initialState, {
     [REQ_RERENDER](state) {
         return {
             ...state,
-            isFetchingPost: true,
+            isFetchingPost: false,
             errorData: null
         };
     },

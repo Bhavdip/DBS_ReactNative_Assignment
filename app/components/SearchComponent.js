@@ -4,6 +4,7 @@ import { StyleSheet, View, TextInput } from 'react-native';
 import { AppContext } from '../context/ApplicationContext';
 
 const SearchComponent = props => {
+    // access the state of post component
     const { setFilterText } = useContext(AppContext);
     const textInputRef = useRef(null);
     return (
@@ -33,6 +34,7 @@ const SearchComponent = props => {
 
 const styles = StyleSheet.create({
     contentContainer: {
+        marginTop: 8,
         paddingHorizontal: 8
     },
     renderButtonStyle: {

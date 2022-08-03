@@ -1,4 +1,4 @@
-import { call, put, select } from 'redux-saga/effects';
+import { call, put, select, delay } from 'redux-saga/effects';
 import { failedToFetchData, savePostData } from '../reudx/action';
 import { postData } from '../reudx/selectors';
 
@@ -58,6 +58,7 @@ export function* fetchLatestPostData() {
 export function* refreshPostData() {
     try {
         console.log(TAG, 'Inside refreshPostData');
+        yield delay(1000);
         let nwUpdatedPostData = appendRanNumAttribute(yield select(postData));
         yield put(savePostData(nwUpdatedPostData));
         console.log(TAG, 'Saved Updated Post Data Successfully');
