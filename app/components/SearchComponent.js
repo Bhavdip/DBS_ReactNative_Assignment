@@ -7,7 +7,7 @@ import { searchInPost } from '../reudx/action';
 
 const SearchComponent = props => {
     // access the state of post component
-    const { dispatch } = useContext(AppReducerContext);
+    const { appDispatch } = useContext(AppReducerContext);
     const { onReRender } = useContext(AppContext);
     const textInputRef = useRef(null);
     return (
@@ -15,7 +15,7 @@ const SearchComponent = props => {
             <TextInput
                 ref={textInputRef}
                 onChangeText={text => {
-                    dispatch(searchInPost(text));
+                    appDispatch(searchInPost(text));
                 }}
                 style={styles.inputTextStyle}
                 autoCapitalize="none"
@@ -28,7 +28,7 @@ const SearchComponent = props => {
                 buttonStyle={styles.renderButtonStyle}
                 onButtonPress={() => {
                     textInputRef.current.clear();
-                    dispatch(searchInPost(''));
+                    appDispatch(searchInPost(''));
                     onReRender();
                 }}
             />

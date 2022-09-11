@@ -5,13 +5,13 @@ import { AppReducerContext } from '../context/AppReducerContext';
 import AppContext from '../context/AppContext';
 
 export const PostsComponent = () => {
-    const { state } = useContext(AppReducerContext);
+    const { appState } = useContext(AppReducerContext);
     const { latestPostData, displayLoading } = useContext(AppContext);
     const [filteredElements, setFilteredElements] = useState(latestPostData);
 
     useEffect(() => {
         const searchResultDataset = latestPostData.filter(element => {
-            const searchWord = state.searchText.trim().toLowerCase();
+            const searchWord = appState.searchText.trim().toLowerCase();
             const postBody = element.body.toLowerCase();
             return RegExp('\\b(.|\\s)' + searchWord).test(postBody);
         });
@@ -20,7 +20,7 @@ export const PostsComponent = () => {
         } else {
             setFilteredElements(latestPostData);
         }
-    }, [state.searchText, latestPostData]);
+    }, [appState.searchText, latestPostData]);
 
     const renderPostBody = ({ item }) => {
         const postContent = `${item.id}:${item.body}`;

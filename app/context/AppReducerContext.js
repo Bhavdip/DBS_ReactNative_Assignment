@@ -6,7 +6,8 @@ export const AppReducerContext = React.createContext();
 export const AppReducerProvider = ({ children }) => {
     const [state, dispatch] = useReducer(appReducer, initialState);
     return (
-        <AppReducerContext.Provider value={{ state, dispatch }}>
+        <AppReducerContext.Provider
+            value={{ appState: state, appDispatch: dispatch }}>
             {children}
         </AppReducerContext.Provider>
     );
